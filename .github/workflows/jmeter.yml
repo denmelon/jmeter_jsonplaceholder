@@ -32,7 +32,10 @@ jobs:
 
       - name: Run JMeter test
         run: |
+          ls -l data
+          head -n 10 data/posts.csv
           /opt/jmeter/bin/jmeter -n -t jsonplaceholder_test.jmx -l results.jtl -p jmeter.properties
+          cat results.jtl | head -n 20
           /opt/jmeter/bin/jmeter -g results.jtl -o report
 
       - name: Upload HTML report
