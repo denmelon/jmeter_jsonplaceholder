@@ -32,7 +32,7 @@ jobs:
 
       - name: Run JMeter test
         run: |
-          /opt/jmeter/bin/jmeter -n -t jsonplaceholder_test.jmx -l results.jtl
+          /opt/jmeter/bin/jmeter -n -t jsonplaceholder_test.jmx -l results.jtl -p jmeter.properties
           /opt/jmeter/bin/jmeter -g results.jtl -o report
 
       - name: Upload HTML report
