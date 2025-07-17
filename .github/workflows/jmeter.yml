@@ -1,0 +1,36 @@
+name: Run JMeter Test
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  jmeter:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Install JMeter
+        run: |
+          wget https://downloads.apache.org//jmeter/binaries/apache-jmeter-5.6.3.tgz
+          tar -xvzf apache-jmeter-5.6.3.tgz
+          sudo mv apache-jmeter-5.6.3 /opt/jmeter
+
+      - name: Run JMeter test
+        run: |
+          /opt/jmeter/bin/jmeter -n -t jsonplaceholder_test.jmx -l results.jtl -e -o report
+
+      - name: Upload JMeter HTML Report
+        uses: actions/upload-artifact@v4
+        with:
+          name: jmeter-html-report
+          path: report
