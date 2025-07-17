@@ -25,8 +25,8 @@ jobs:
           tar -xvzf apache-jmeter-5.6.3.tgz
           sudo mv apache-jmeter-5.6.3 /opt/jmeter
           
-      - name: Clean previous report folder
-        run: rm -rf report
+      - name: Remove old results file
+        run: rm -f results.jtl
 
       - name: Run JMeter test
         run: |
