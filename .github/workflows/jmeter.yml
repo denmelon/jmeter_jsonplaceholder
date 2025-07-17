@@ -6,34 +6,35 @@ on:
       - main
 
 jobs:
-  jmeter:
+  performance-test:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Set up JDK
+      - name: Set up Java
         uses: actions/setup-java@v3
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: temurin
+          java-version: 17
 
       - name: Install JMeter
-        run: |
-          wget https://downloads.apache.org//jmeter/binaries/apache-jmeter-5.6.3.tgz
-          tar -xvzf apache-jmeter-5.6.3.tgz
-          sudo mv apache-jmeter-5.6.3 /opt/jmeter
-          
-      - name: Remove old results file
-        run: rm -f results.jtl
+        uses: justb4/jmeter@v1.5.0
 
-      - name: Run JMeter test
+      - name: Remove old results and reports
         run: |
-          /opt/jmeter/bin/jmeter -n -t jsonplaceholder_test.jmx -l results.jtl -e -o report
+          rm -f results.jtl
+          rm -rf report
 
-      - name: Upload JMeter HTML Report
+      - name: Run JMeter tests
+        run: |
+          jmeter -n -t testplan.jmx -l results.jtl -e -o report
+
+      - name: Upload HTML report
+        if: success()
         uses: actions/upload-artifact@v4
         with:
           name: jmeter-html-report
           path: report
+          if-no-files-found: warn
