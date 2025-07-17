@@ -32,8 +32,8 @@ jobs:
 
       - name: Run JMeter test
         run: |
-          /opt/jmeter/bin/jmeter -n -t jsonplaceholder_test.jmx -l report/results.jtl
-          /opt/jmeter/bin/jmeter -g report/results.jtl -o report
+         /opt/jmeter/bin/jmeter -n -t jsonplaceholder_test.jmx -l results.jtl
+         /opt/jmeter/bin/jmeter -g results.jtl -o report
 
       - name: Upload HTML report
         if: success()
